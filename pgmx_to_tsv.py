@@ -33,6 +33,15 @@ df = pd.DataFrame.from_records(non_util_nodes)
 df.to_csv(os.path.join("pgmx_output", "pgmx_output_non_util_nodes.tsv"), sep="\t", index=False, na_rep='NULL')
 
 
+util_nodes = []
+for node in bs_content.find("Variables").find_all("Variable", role=lambda x: x == 'utility'):
+    property = node.find("AdditionalProperties")
+    x = int(node.find("Coordinates").get("x"))
+    y = int(node.find("Coordinates").get("y"))
+
+    non_util_nodes.append({"name": node.get("name"), "type": node.get("type"), "role": node.get("role"), "states": states, "x": x, "y": y})
+    #print (node)
+
 links = []
 for l in bs_content.find("Links").find_all("Link"):
     
