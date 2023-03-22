@@ -1,0 +1,5 @@
+name	type	role	states	x	y
+PCR test	finiteStates	decision	no; yes	152	220
+Paxlovid_or_Remdesivir	finiteStates	decision	Do nothing; Remdesivir; Paxlovid	717	248
+COVID-19	finiteStates	chance	absent; present	387	251
+Test result	finiteStates	chance	Negative; Positive	271	368

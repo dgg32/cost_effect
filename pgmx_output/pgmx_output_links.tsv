@@ -1,0 +1,7 @@
+source	target	role	type	values	revelation_name
+PCR test	Test cost	NULL	NULL	NULL	NULL
+PCR test	Test result	linkRestriction	Table	0.0 1.0 0.0 1.0	yes
+Paxlovid_or_Remdesivir	Effectiveness	NULL	NULL	NULL	NULL
+Paxlovid_or_Remdesivir	Medicine cost	NULL	NULL	NULL	NULL
+COVID-19	Test result	NULL	NULL	NULL	NULL
+COVID-19	Effectiveness	NULL	NULL	NULL	NULL
