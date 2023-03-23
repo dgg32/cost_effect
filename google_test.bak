@@ -112,7 +112,7 @@
           <Variable name="COVID-19" />
           <Variable name="Do treatment" />
         </Variables>
-        <Values>10.0 1.2 9.3 6.5 9.9 4.0</Values>
+        <Values>10.0 1.2 9.9 4.0 9.3 6.5</Values>
       </Potential>
       <Potential type="Table" role="conditionalProbability">
         <UtilityVariable name="Medicine cost" />
@@ -132,7 +132,7 @@
   </ProbNet>
   <InferenceOptions>
     <MulticriteriaOptions>
-      <SelectedAnalysisType>UNICRITERION</SelectedAnalysisType>
+      <SelectedAnalysisType>COST_EFFECTIVENESS</SelectedAnalysisType>
       <Unicriterion>
         <Unit>$</Unit>
         <Scales>

@@ -1,0 +1,4 @@
+name	role	description	model
+Well-being	utility	The well-being score.	cost_effect
+Medicine cost	utility	The cost of medicine in $	cost_effect
+Test cost	utility	The cost of test in $	cost_effect

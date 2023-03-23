@@ -6,7 +6,7 @@ import os
 content = []
 
 # Read the XML file
-with open("covid_strategy.pgmx", "r") as file:
+with open("test.pgmx", "r") as file:
     # Read each line in the file, readlines() returns a list of lines
     content = file.readlines()
 # Combine the lines in the list into a string

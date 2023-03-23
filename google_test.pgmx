@@ -8,18 +8,18 @@
         
     </DecisionCriteria>
     <Variables>
-        <Variable name="Do_test" type="finiteStates" role="decision">
+        <Variable name="Do test" type="finiteStates" role="decision">
             <Coordinates x="152" y="220" />
             <States>
-                <State name="no" />
-                <State name="yes" />
+                <State name="No" />
+                <State name="COVID PCR test" />
                 
             </States>
             </Variable>
-        <Variable name="Paxlovid_or_Remdesivir" type="finiteStates" role="decision">
+        <Variable name="Do treatment" type="finiteStates" role="decision">
             <Coordinates x="717" y="248" />
             <States>
-                <State name="Do nothing" />
+                <State name="No" />
                 <State name="Remdesivir" />
                 <State name="Paxlovid" />
                 
@@ -28,8 +28,8 @@
         <Variable name="COVID-19" type="finiteStates" role="chance">
             <Coordinates x="387" y="251" />
             <States>
-                <State name="absent" />
-                <State name="present" />
+                <State name="Absent" />
+                <State name="Present" />
                 
             </States>
             </Variable>
@@ -43,7 +43,7 @@
             </Variable>
         
 
-        <Variable name="Effectiveness" type="numeric" role="utility">
+        <Variable name="Well-being" type="numeric" role="utility">
                 <Coordinates x="534" y="355" />
                 <Unit />
                 <Precision>0.01</Precision>
@@ -65,18 +65,18 @@
     </Variables>
     <Links>
       <Link directed="true">
-            <Variable name="Do_test" />
+            <Variable name="Do test" />
             <Variable name="Test cost" />
             
             
         </Link>
       <Link directed="true">
-            <Variable name="Do_test" />
+            <Variable name="Do test" />
             <Variable name="Test result" />
             
                 <Potential type="Table" role="linkRestriction">
                     <Variables>
-                        <Variable name="Do_test" />
+                        <Variable name="Do test" />
                         <Variable name="Test result" />
                     </Variables>
                     <Values>0.0 1.0 0.0 1.0</Values>
@@ -84,18 +84,18 @@
             
             
             <RevelationCondition>
-                <State name="yes" />
+                <State name="COVID PCR test" />
             </RevelationCondition>
             
         </Link>
       <Link directed="true">
-            <Variable name="Paxlovid_or_Remdesivir" />
-            <Variable name="Effectiveness" />
+            <Variable name="Do treatment" />
+            <Variable name="Well-being" />
             
             
         </Link>
       <Link directed="true">
-            <Variable name="Paxlovid_or_Remdesivir" />
+            <Variable name="Do treatment" />
             <Variable name="Medicine cost" />
             
             
@@ -108,7 +108,7 @@
         </Link>
       <Link directed="true">
             <Variable name="COVID-19" />
-            <Variable name="Effectiveness" />
+            <Variable name="Well-being" />
             
             
         </Link>
@@ -127,7 +127,7 @@
             
             <Variables>
             <Variable name="Test result" />
-            <Variable name="Do_test" />
+            <Variable name="Do test" />
             <Variable name="COVID-19" />
             
             </Variables>
@@ -135,21 +135,21 @@
         </Potential>
       <Potential type="Table" role="conditionalProbability">
             
-            <UtilityVariable name="Effectiveness" />
+            <UtilityVariable name="Well-being" />
             
             <Variables>
             <Variable name="COVID-19" />
-            <Variable name="Paxlovid_or_Remdesivir" />
+            <Variable name="Do treatment" />
             
             </Variables>
-            <Values>10.0 1.2 9.3 6.5 9.9 4.0</Values>
+            <Values>10.0 1.2 9.9 4.0 9.3 6.5</Values>
         </Potential>
       <Potential type="Table" role="conditionalProbability">
             
             <UtilityVariable name="Medicine cost" />
             
             <Variables>
-            <Variable name="Paxlovid_or_Remdesivir" />
+            <Variable name="Do treatment" />
             
             </Variables>
             <Values>0.0 390.0 1530.0</Values>
@@ -159,7 +159,7 @@
             <UtilityVariable name="Test cost" />
             
             <Variables>
-            <Variable name="Do_test" />
+            <Variable name="Do test" />
             
             </Variables>
             <Values>0.0 150.0</Values>

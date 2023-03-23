@@ -1,6 +1,0 @@
-type	role	variables	values	utility_variable
-Table	conditionalProbability	COVID-19	0.5 0.5	NULL
-Table	conditionalProbability	Test result; PCR test; COVID-19	0.0 0.0 0.93 0.07 0.0 0.0 0.1 0.9	NULL
-Table	conditionalProbability	COVID-19; Paxlovid_or_Remdesivir	10.0 1.2 9.3 6.5 9.9 4.0	Effectiveness
-Table	conditionalProbability	Paxlovid_or_Remdesivir	0.0 390.0 1530.0	Medicine cost
-Table	conditionalProbability	PCR test	0.0 150.0	Test cost

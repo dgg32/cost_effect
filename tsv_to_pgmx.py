@@ -5,7 +5,7 @@ import math
 
 file_loader = FileSystemLoader('templates')
 env = Environment(loader=file_loader)
-template = env.get_template('unicriterion_pgmx.txt')
+template = env.get_template('unicriterion_pgmx.jinja')
 
 def get_pgmx(non_util_nodes_df: pd.DataFrame, util_nodes_df: pd.DataFrame, 
              links_df: pd.DataFrame, potentials_df: pd.DataFrame,

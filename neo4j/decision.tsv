@@ -1,0 +1,3 @@
+name	role	description	model
+Do test	decision	Whether to do a COVID test	cost_effect
+Do treatment	decision	Whether to take Paxlovid, Remdesivir or do nothing	cost_effect

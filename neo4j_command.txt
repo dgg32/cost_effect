@@ -1,0 +1,44 @@
+CREATE CONSTRAINT IF NOT EXISTS FOR (d:Decision) REQUIRE d.name IS UNIQUE;
+
+CREATE CONSTRAINT IF NOT EXISTS FOR (d:Disease) REQUIRE d.name IS UNIQUE;
+
+CREATE CONSTRAINT IF NOT EXISTS FOR (m:Medical_test) REQUIRE m.name IS UNIQUE;
+
+CREATE CONSTRAINT IF NOT EXISTS FOR (m:Medicine) REQUIRE m.name IS UNIQUE;
+
+CREATE CONSTRAINT IF NOT EXISTS FOR (o:Outcome) REQUIRE o.name IS UNIQUE;
+
+CREATE CONSTRAINT IF NOT EXISTS FOR (u:Utility) REQUIRE u.name IS UNIQUE;
+
+LOAD CSV WITH HEADERS FROM 'file:///decision.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Decision {name: row.name, description: row.description, role: row.role, model: row.model});
+
+LOAD CSV WITH HEADERS FROM 'file:///disease.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Disease {name: row.name, description: row.description, role: row.role, model: row.model});
+
+LOAD CSV WITH HEADERS FROM 'file:///medical_test.tsv' AS row FIELDTERMINATOR '\t' MERGE (m:Medical_test {name: row.name, description: row.description, role: row.role, model: row.model});
+
+LOAD CSV WITH HEADERS FROM 'file:///medicine.tsv' AS row FIELDTERMINATOR '\t' MERGE (m:Medicine {name: row.name, description: row.description, role: row.role, model: row.model});
+
+LOAD CSV WITH HEADERS FROM 'file:///outcome.tsv' AS row FIELDTERMINATOR '\t' MERGE (o:Outcome {name: row.name, description: row.description, role: row.role, model: row.model});
+
+LOAD CSV WITH HEADERS FROM 'file:///utility.tsv' AS row FIELDTERMINATOR '\t' MERGE (u:Utility {name: row.name, description: row.description, role: row.role, model: row.model});
+
+
+
+LOAD CSV WITH HEADERS FROM 'file:///costs.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Decision {name: row.source}) MERGE (u:Utility {name: row.target}) MERGE (d)-[r:COSTS]->(u);
+
+LOAD CSV WITH HEADERS FROM 'file:///has_medical_outcome.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Decision {name: row.source}) MERGE (u:Utility {name: row.target}) MERGE (d)-[r:HAS_MEDICAL_OUTCOME]->(u);
+
+LOAD CSV WITH HEADERS FROM 'file:///has_possible_outcome.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Decision {name: row.source}) MERGE (o:Outcome {name: row.target}) MERGE (d)-[r:HAS_POSSIBLE_OUTCOME]->(o);
+
+LOAD CSV WITH HEADERS FROM 'file:///has_wellbeing_outcome.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Disease {name: row.source}) MERGE (u:Utility{name: row.target}) MERGE (d)-[r:HAS_WELLBEING_OUTCOME]->(u);
+
+
+LOAD CSV WITH HEADERS FROM 'file:///medicine_involved_in_decision.tsv' AS row FIELDTERMINATOR '\t' MERGE (m:Medicine {name: row.source}) MERGE (d:Decision{name: row.target}) MERGE (m)-[r:MEDICINE_INVOLVED_IN_DECISION]->(d);
+
+LOAD CSV WITH HEADERS FROM 'file:///reflected_in_outcome.tsv' AS row FIELDTERMINATOR '\t' MERGE (d:Disease {name: row.source}) MERGE (o:Outcome{name: row.target}) MERGE (d)-[r:REFLECTED_IN_OUTCOME]->(o);
+
+LOAD CSV WITH HEADERS FROM 'file:///test_involved_in_decision.tsv' AS row FIELDTERMINATOR '\t' MERGE (m:Medical_test {name: row.source}) MERGE (d:Decision{name: row.target}) MERGE (m)-[r:TEST_INVOLVED_IN_DECISION]->(d);
+
+LOAD CSV WITH HEADERS FROM 'file:///treats.tsv' AS row FIELDTERMINATOR '\t' MERGE (m:Medicine {name: row.source}) MERGE (d:Disease{name: row.target}) MERGE (m)-[r:TREATS]->(d);
+
+LOAD CSV WITH HEADERS FROM 'file:///tests.tsv' AS row FIELDTERMINATOR '\t' MERGE (m:Medical_test {name: row.source}) MERGE (d:Disease{name: row.target}) MERGE (m)-[r:TESTS]->(d);

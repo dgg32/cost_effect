@@ -1,0 +1,3 @@
+source	target	model
+Do test	Test cost	cost_effect
+Do treatment	Medicine cost	cost_effect
