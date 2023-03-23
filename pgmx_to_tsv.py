@@ -14,9 +14,19 @@ content = "".join(content)
 bs_content = bs(content, "xml")
 
 criterions = []
+criterions_temp = {}
 for node in bs_content.find("DecisionCriteria").find_all("Criterion"):
     #print (node.get("name"), node.get("unit"))
-    criterions.append({"name": node.get("name"), "unit": node.get("unit")})
+    criterions_temp[node.get("name")] = {"unit": node.get("unit")}
+
+for node in bs_content.find("InferenceOptions").find_all("Unicriterion"):
+    for s in node.find_all("Scale"):
+        criterions_temp[s.get("Criterion")]["scale"] = s.get("Value")
+
+
+for c in criterions_temp:
+    criterions.append({"name": c, "unit": criterions_temp[c]["unit"], "scale": criterions_temp[c]["scale"]})
+
 df = pd.DataFrame.from_records(criterions)
 df.to_csv(os.path.join("pgmx_output", "pgmx_output_criterions.tsv"), sep="\t", index=False, na_rep='NULL')
 
@@ -35,12 +45,18 @@ df.to_csv(os.path.join("pgmx_output", "pgmx_output_non_util_nodes.tsv"), sep="\t
 
 util_nodes = []
 for node in bs_content.find("Variables").find_all("Variable", role=lambda x: x == 'utility'):
-    property = node.find("AdditionalProperties")
+
     x = int(node.find("Coordinates").get("x"))
     y = int(node.find("Coordinates").get("y"))
 
-    non_util_nodes.append({"name": node.get("name"), "type": node.get("type"), "role": node.get("role"), "states": states, "x": x, "y": y})
+    criterion = node.find("Criterion").get("name")
+    precision = float(node.find("Precision").text)
+
+    util_nodes.append({"name": node.get("name"), "type": node.get("type"), "role": node.get("role"), 
+                       "type": node.get("type"), "x": x, "y": y, "criterion": criterion, "precision": precision})
     #print (node)
+df = pd.DataFrame.from_records(util_nodes)
+df.to_csv(os.path.join("pgmx_output", "pgmx_output_util_nodes.tsv"), sep="\t", index=False, na_rep='NULL')
 
 links = []
 for l in bs_content.find("Links").find_all("Link"):
@@ -83,7 +99,13 @@ potentials = []
 for potential in bs_content.find("Potentials").find_all("Potential"):
     variables = "; ".join([n.get("name") for n in potential.find("Variables").find_all("Variable")])
     values = potential.find("Values").text
-    potentials.append({"type": potential.get("type"), "role": potential.get("role"), "variables": variables, "values": values})
+
+    temp = {"type": potential.get("type"), "role": potential.get("role"), "variables": variables, "values": values}
+
+    for u in potential.find_all("UtilityVariable"):
+        utility_variable = u.get("name")
+        temp["utility_variable"] = utility_variable
+    potentials.append(temp)
     
 df = pd.DataFrame.from_records(potentials)
 df.to_csv(os.path.join("pgmx_output", "pgmx_output_potentials.tsv"), sep="\t", index=False, na_rep='NULL')

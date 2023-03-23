@@ -1,0 +1,4 @@
+name	type	role	x	y	criterion	precision	model
+Effectiveness	numeric	utility	534	355	Effectiveness	0.01	cost_effect
+Medicine cost	numeric	utility	670	516	Cost	0.01	cost_effect
+Test cost	numeric	utility	191	498	Cost	0.01	cost_effect

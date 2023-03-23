@@ -6,7 +6,7 @@
       <Criterion name="Cost" unit="$" />
       <Criterion name="Effectiveness" unit="QALY" />
     </DecisionCriteria>
-    <Properties />
+    <AdditionalProperties />
     <Variables>
       <Variable name="PCR test" type="finiteStates" role="decision">
         <Coordinates x="152" y="220" />
@@ -39,27 +39,18 @@
       </Variable>
       <Variable name="Effectiveness" type="numeric" role="utility">
         <Coordinates x="534" y="355" />
-        <AdditionalProperties>
-          <Property name="Purpose" value="effectiveness" />
-        </AdditionalProperties>
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Effectiveness" />
       </Variable>
       <Variable name="Medicine cost" type="numeric" role="utility">
         <Coordinates x="670" y="516" />
-        <AdditionalProperties>
-          <Property name="Purpose" value="cost" />
-        </AdditionalProperties>
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Cost" />
       </Variable>
       <Variable name="Test cost" type="numeric" role="utility">
         <Coordinates x="191" y="498" />
-        <AdditionalProperties>
-          <Property name="Purpose" value="cost" />
-        </AdditionalProperties>
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Cost" />

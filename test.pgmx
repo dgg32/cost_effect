@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProbModelXML formatVersion="0.2.0">
+  <ProbNet type="DAN">
+    <AdditionalProperties />
+    <DecisionCriteria>
+        <Criterion name="Cost" unit="$" />
+        <Criterion name="Effectiveness" unit="QALY" />
+        
+    </DecisionCriteria>
+    <Variables>
+        <Variable name="PCR test" type="finiteStates" role="decision">
+            <Coordinates x="152" y="220" />
+            <States>
+                <State name="no" />
+                <State name="yes" />
+                
+            </States>
+            </Variable>
+        <Variable name="Paxlovid_or_Remdesivir" type="finiteStates" role="decision">
+            <Coordinates x="717" y="248" />
+            <States>
+                <State name="Do nothing" />
+                <State name="Remdesivir" />
+                <State name="Paxlovid" />
+                
+            </States>
+            </Variable>
+        <Variable name="COVID-19" type="finiteStates" role="chance">
+            <Coordinates x="387" y="251" />
+            <States>
+                <State name="absent" />
+                <State name="present" />
+                
+            </States>
+            </Variable>
+        <Variable name="Test result" type="finiteStates" role="chance">
+            <Coordinates x="271" y="368" />
+            <States>
+                <State name="Negative" />
+                <State name="Positive" />
+                
+            </States>
+            </Variable>
+        
+
+        <Variable name="Effectiveness" type="numeric" role="utility">
+                <Coordinates x="534" y="355" />
+                <Unit />
+                <Precision>0.01</Precision>
+                <Criterion name="Effectiveness" />
+            </Variable>
+        <Variable name="Medicine cost" type="numeric" role="utility">
+                <Coordinates x="670" y="516" />
+                <Unit />
+                <Precision>0.01</Precision>
+                <Criterion name="Cost" />
+            </Variable>
+        <Variable name="Test cost" type="numeric" role="utility">
+                <Coordinates x="191" y="498" />
+                <Unit />
+                <Precision>0.01</Precision>
+                <Criterion name="Cost" />
+            </Variable>
+        
+    </Variables>
+    <Links>
+      <Link directed="true">
+            <Variable name="PCR test" />
+            <Variable name="Test cost" />
+            
+            
+        </Link>
+      <Link directed="true">
+            <Variable name="PCR test" />
+            <Variable name="Test result" />
+            
+                <Potential type="Table" role="linkRestriction">
+                    <Variables>
+                        <Variable name="PCR test" />
+                        <Variable name="Test result" />
+                    </Variables>
+                    <Values>0.0 1.0 0.0 1.0</Values>
+                </Potential>
+            
+            
+            <RevelationCondition>
+                <State name="yes" />
+            </RevelationCondition>
+            
+        </Link>
+      <Link directed="true">
+            <Variable name="Paxlovid_or_Remdesivir" />
+            <Variable name="Effectiveness" />
+            
+            
+        </Link>
+      <Link directed="true">
+            <Variable name="Paxlovid_or_Remdesivir" />
+            <Variable name="Medicine cost" />
+            
+            
+        </Link>
+      <Link directed="true">
+            <Variable name="COVID-19" />
+            <Variable name="Test result" />
+            
+            
+        </Link>
+      <Link directed="true">
+            <Variable name="COVID-19" />
+            <Variable name="Effectiveness" />
+            
+            
+        </Link>
+      
+    </Links>
+    <Potentials>
+      <Potential type="Table" role="conditionalProbability">
+            
+            <Variables>
+            <Variable name="COVID-19" />
+            
+            </Variables>
+            <Values>0.5 0.5</Values>
+        </Potential>
+      <Potential type="Table" role="conditionalProbability">
+            
+            <Variables>
+            <Variable name="Test result" />
+            <Variable name="PCR test" />
+            <Variable name="COVID-19" />
+            
+            </Variables>
+            <Values>0.0 0.0 0.93 0.07 0.0 0.0 0.1 0.9</Values>
+        </Potential>
+      <Potential type="Table" role="conditionalProbability">
+            
+            <UtilityVariable name="Effectiveness" />
+            
+            <Variables>
+            <Variable name="COVID-19" />
+            <Variable name="Paxlovid_or_Remdesivir" />
+            
+            </Variables>
+            <Values>10.0 1.2 9.3 6.5 9.9 4.0</Values>
+        </Potential>
+      <Potential type="Table" role="conditionalProbability">
+            
+            <UtilityVariable name="Medicine cost" />
+            
+            <Variables>
+            <Variable name="Paxlovid_or_Remdesivir" />
+            
+            </Variables>
+            <Values>0.0 390.0 1530.0</Values>
+        </Potential>
+      <Potential type="Table" role="conditionalProbability">
+            
+            <UtilityVariable name="Test cost" />
+            
+            <Variables>
+            <Variable name="PCR test" />
+            
+            </Variables>
+            <Values>0.0 150.0</Values>
+        </Potential>
+      
+    </Potentials>
+</ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>UNICRITERION</SelectedAnalysisType>
+      <Unicriterion>
+        <Unit>
+            
+                $
+                
+            
+            
+        </Unit>
+        <Scales>
+        <Scale Criterion="Cost" Value="-1.0" />
+        <Scale Criterion="Effectiveness" Value="1000.0" />
+        
+        </Scales>
+      </Unicriterion>
+    </MulticriteriaOptions>
+  </InferenceOptions>
+</ProbModelXML>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProbModelXML formatVersion="0.2.0">
+  <ProbNet type="DAN">
+    <AdditionalProperties />
+    <DecisionCriteria>
+        {% for criterion in criterions -%}
+            <Criterion name="{{ criterion.name }}" unit="{{ criterion.unit }}" />
+        {% endfor %}
+    </DecisionCriteria>
+    <Variables>
+        {% for node in non_util_nodes -%}
+            <Variable name="{{ node.name }}" type="{{ node.type }}" role="{{ node.role }}">
+            <Coordinates x="{{ node.x }}" y="{{ node.y }}" />
+            <States>
+                {% for s in node.states -%}
+                <State name="{{ s }}" />
+                {% endfor %}
+            </States>
+            </Variable>
+        {% endfor %}
+
+        {% for node in util_nodes -%}
+            <Variable name="{{ node.name }}" type="{{ node.type }}" role="{{ node.role }}">
+                <Coordinates x="{{ node.x }}" y="{{ node.y }}" />
+                <Unit />
+                <Precision>{{ node.precision }}</Precision>
+                <Criterion name="{{ node.criterion }}" />
+            </Variable>
+        {% endfor %}
+    </Variables>
+    <Links>
+      {% for link in links -%}
+        <Link directed="true">
+            <Variable name="{{ link.source }}" />
+            <Variable name="{{ link.target }}" />
+            {% if link.role == "linkRestriction" %}
+                <Potential type="Table" role="linkRestriction">
+                    <Variables>
+                        <Variable name="{{ link.source }}" />
+                        <Variable name="{{ link.target }}" />
+                    </Variables>
+                    <Values>{{ link.values_ }}</Values>
+                </Potential>
+            {% endif %}
+            {% if link.revelation_name  %}
+            <RevelationCondition>
+                <State name="{{ link.revelation_name }}" />
+            </RevelationCondition>
+            {% endif %}
+        </Link>
+      {% endfor %}
+    </Links>
+    <Potentials>
+      {% for potential in potentials -%}
+        <Potential type="{{ potential.type }}" role="{{ potential.role }}">
+            {% if potential.utility_variable %}
+            <UtilityVariable name="{{ potential.utility_variable }}" />
+            {% endif %}
+            <Variables>
+            {% for v in potential.variables -%}
+                <Variable name="{{ v }}" />
+            {% endfor %}
+            </Variables>
+            <Values>{{ potential.value }}</Values>
+        </Potential>
+      {% endfor %}
+    </Potentials>
+</ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>UNICRITERION</SelectedAnalysisType>
+      <Unicriterion>
+        <Unit>
+            {% for criterion in criterions -%}
+                {% if criterion.unit in ["$", "€"] %}
+                {{ criterion.unit }}
+                {% endif %}
+            {% endfor %}
+        </Unit>
+        <Scales>
+        {% for criterion in criterions -%}
+          <Scale Criterion="{{ criterion.name }}" Value="{{ criterion.scale }}" />
+        {% endfor %}
+        </Scales>
+      </Unicriterion>
+    </MulticriteriaOptions>
+  </InferenceOptions>
+</ProbModelXML>
